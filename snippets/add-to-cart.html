@@ -1,0 +1,20 @@
+{% if app.settings.google_analytics_enabled %}
+<script>
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+    'event': 'addToCart',
+    'ecommerce': {
+        'currencyCode': '{{ line.price_currency }}',
+        'add': {
+        'products': [{
+                'id': '{{ line.product_id|escapejs }}',
+                'name': '{{ line.product.title|escapejs }}',
+                'brand': '{{ store_name|escapejs }}',
+                'price': '{{ line.unit_price_incl_tax_incl_discount|escapejs }}',
+                'quantity': '{{ quantity }}'
+            }]
+        }
+    }
+    });
+</script>
+{% endif %}

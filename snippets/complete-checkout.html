@@ -1,0 +1,32 @@
+{% if app.settings.google_analytics_enabled %}
+<script>
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+    'ecommerce': {
+        'purchase': {
+        'actionField': {
+            'id': '{{ order.number|escapejs }}',
+            'affiliation': '{{ store.name|escapejs }}',
+            'revenue': '{{ order.total_incl_tax|unlocalize|escapejs }}',
+            'tax':'{{ order.total_tax|unlocalize|escapejs }}',
+            'shipping': '{{ order.shipping_incl_tax|unlocalize|escapejs }}',
+            'coupon': '{% if order.voucherapplication_set.first.voucher.code %}{{ order.voucherapplication_set.first.voucher.code }}{% endif %}',
+            'currency': '{{ order.currency|escapejs }}',
+        },
+        'products': [
+            {% for line in order.lines.all %}
+            {
+                'id': '{{ line.product.id|escapejs }}',
+                'name': '{{ line.title|escapejs }}',
+                'brand': '{{ store_name|escapejs }}',
+                'category': '{{ line.product.categories.first|default:'Uncategorised'|escapejs }}',
+                'price': '{{ line.unit_price_incl_tax_incl_discount|unlocalize|escapejs }}',
+                'quantity': {{ line.quantity|escapejs }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+        }
+    }
+    });
+</script>
+{% endif %}

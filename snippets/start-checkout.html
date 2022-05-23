@@ -1,0 +1,25 @@
+{% if app.settings.google_analytics_enabled %}
+<script>
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+        'event': 'checkout',
+        'ecommerce': {
+        'checkout': {
+            'actionField': {'step': 1, 'option': '{{ basket.vouchers.first.code }}'},
+            'products': [
+                {% for line in basket.all_lines %}
+                {
+                    'id': '{{ line.product.id|escapejs }}',
+                    'name': '{{ line.product.get_title|escapejs }}',
+                    'brand': '{{ store.name|escapejs }}',
+                    'category': '{{ line.product.categories.first.name|safe }}',
+                    'quantity': {{ line.quantity|escapejs }},
+                    'price': '{{ line.unit_price_incl_tax_incl_discount|unlocalize|escapejs }}'
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    }
+    });
+</script>
+{% endif %}
