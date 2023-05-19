@@ -5,6 +5,7 @@
         event: 'begin_checkout',
         ecommerce: {
             currency: '{{ basket.currency }}',
+            value: '{{ order_total.incl_tax }}',
             coupon: '{{ basket.vouchers.first.code }}',
             items: [
                 {% for line in basket.all_lines %}
