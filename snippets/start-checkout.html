@@ -2,24 +2,24 @@
 <script>
     dataLayer.push({ ecommerce: null });
     dataLayer.push({
-        'event': 'checkout',
-        'ecommerce': {
-        'checkout': {
-            'actionField': {'step': 1, 'option': '{{ basket.vouchers.first.code }}'},
-            'products': [
+        event: 'begin_checkout',
+        ecommerce: {
+            currency: '{{ basket.currency }}',
+            coupon: '{{ basket.vouchers.first.code }}',
+            items: [
                 {% for line in basket.all_lines %}
                 {
-                    'id': '{{ line.product.id|escapejs }}',
-                    'name': '{{ line.product.get_title|escapejs }}',
-                    'brand': '{{ store.name|escapejs }}',
-                    'category': '{{ line.product.categories.first.name|safe }}',
-                    'quantity': {{ line.quantity|escapejs }},
-                    'price': '{{ line.unit_price_incl_tax_incl_discount|unlocalize|escapejs }}'
-                }{% if not forloop.last %},{% endif %}
+                    index: {{ forloop.counter0 }},
+                    item_id: '{{ line.product.id|escapejs }}',
+                    item_name: '{{ line.product.get_title|escapejs }}',
+                    item_brand: '{{ store.name|escapejs }}',
+                    item_category:  '{{ line.product.categories.first.name|safe }}',
+                    price:  '{{ line.unit_price_incl_tax_incl_discount|unlocalize|escapejs }}',
+                    quantity: {{ line.quantity | escapejs }}
+                }{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             ]
         }
-    }
     });
 </script>
 {% endif %}
