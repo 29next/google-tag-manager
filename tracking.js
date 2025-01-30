@@ -63,27 +63,6 @@ if (app.settings.google_tag_manager_enabled) {
         });
     });
 
-    analytics.subscribe('product_added_to_cart', (event) => {
-        dataLayer.push({ ecommerce: null });
-        dataLayer.push({
-            event: 'add_to_cart',
-            ecommerce: {
-                currency: event.data?.purchase_info?.price?.currency,
-                value: event.data?.purchase_info?.price?.price,
-                items: [
-                    {
-                        index: 0,
-                        item_id: event.data?.id,
-                        item_name: event.data?.title,
-                        item_category: event.data?.categories?.length ? event.data.categories[0].name : "",
-                        price: event.data?.purchase_info?.price?.price,
-                        quantity: event.data?.quantity
-                    }
-                ]
-            }
-        });
-    });
-
     analytics.subscribe('checkout_started', (event) => {
         dataLayer.push({ ecommerce: null });
         dataLayer.push({
