@@ -60,15 +60,15 @@ if (app.settings.google_tag_manager_enabled) {
         window.dataLayer.push({
             event: 'add_to_cart',
             ecommerce: {
-                currency: event.data?.purchase_info?.price?.currency,
-                value: event.data?.purchase_info?.price?.price,
+                currency: event.data?.currency,
+                value: event.data?.price_incl_tax,
                 items: [
                     {
-                        index: 0,
                         item_id: event.data?.id,
                         item_name: event.data?.title,
+                        sku: event.data?.sku,
                         item_category: event.data?.categories?.length ? event.data.categories[0].name : "",
-                        price: event.data?.purchase_info?.price?.price,
+                        price: (event.data?.price_incl_tax / event.data?.quantity).toFixed(2),
                         quantity: event.data?.quantity
                     }
                 ]
