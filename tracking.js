@@ -1,14 +1,4 @@
 if (app.settings.google_tag_manager_enabled) {
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(conifg) { dataLayer.push(arguments); }
-    (function (w, d, s, l, i) {
-        w[l] = w[l] || []; w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'
-        }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', app.settings.google_tag_manager_container_id)
-
-
     let prepareLineItems = (event) => {
         let result = []
         event.data?.lines?.forEach((line, _) => {
@@ -23,20 +13,24 @@ if (app.settings.google_tag_manager_enabled) {
         });
         return result;
     }
-
     analytics.subscribe('page_viewed', (event) => {
-        window.dataLayer.push({
+        window.top.dataLayer.push({
             event: "page_view",
-            page_path: window.parent.location.pathname,
-            page_location: window.parent.location.href,
-            page_title: window.parent.document.title
+            page_referrer: window.top.document.referrer,
+            page_title: window.top.document.title,
+            page_path: window.top.top.location.pathname,
+            page_location: window.top.location.href,
         });
     });
 
     analytics.subscribe('product_viewed', (event) => {
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push({
-            event: 'view_item',
+        window.top.dataLayer.push({ ecommerce: null });
+        window.top.dataLayer.push({
+            event: "view_item",
+            page_referrer: window.top.document.referrer,
+            page_title: window.top.document.title,
+            page_path: window.top.top.location.pathname,
+            page_location: window.top.location.href,
             ecommerce: {
                 currency: event.data?.purchase_info?.price?.currency,
                 value: event.data?.purchase_info?.price?.price,
@@ -56,9 +50,13 @@ if (app.settings.google_tag_manager_enabled) {
     });
 
     analytics.subscribe('product_added_to_cart', (event) => {
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push({
-            event: 'add_to_cart',
+        window.top.dataLayer.push({ ecommerce: null });
+        window.top.dataLayer.push({
+            event: "add_to_cart",
+            page_referrer: window.top.document.referrer,
+            page_title: window.top.document.title,
+            page_path: window.top.top.location.pathname,
+            page_location: window.top.location.href,
             ecommerce: {
                 currency: event.data?.currency,
                 value: event.data?.price_incl_tax,
@@ -77,9 +75,13 @@ if (app.settings.google_tag_manager_enabled) {
     });
 
     analytics.subscribe('checkout_started', (event) => {
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push({
-            event: 'begin_checkout',
+        window.top.dataLayer.push({ ecommerce: null });
+        window.top.dataLayer.push({
+            event: "begin_checkout",
+            page_referrer: window.top.document.referrer,
+            page_title: window.top.document.title,
+            page_path: window.top.top.location.pathname,
+            page_location: window.top.location.href,
             ecommerce: {
                 currency: event.data?.currency,
                 value: event.data?.total_incl_tax,
@@ -90,9 +92,13 @@ if (app.settings.google_tag_manager_enabled) {
     });
 
     analytics.subscribe('checkout_completed', (event) => {
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push({
-            event: 'purchase',
+        window.top.dataLayer.push({ ecommerce: null });
+        window.top.dataLayer.push({
+            event: "purchase",
+            page_referrer: window.top.document.referrer,
+            page_title: window.top.document.title,
+            page_path: window.top.top.location.pathname,
+            page_location: window.top.location.href,
             ecommerce: {
                 currency: event.data?.currency,
                 value: event.data?.total_incl_tax,
