@@ -62,12 +62,11 @@ if (app.settings.google_tag_manager_enabled) {
                 value: event.data?.price_incl_tax,
                 items: [
                     {
-                        item_id: event.data?.id,
-                        item_name: event.data?.title,
+                        item_id: event.data?.product_id,
+                        item_name: event.data?.product_title,
                         sku: event.data?.sku,
-                        item_category: event.data?.categories?.length ? event.data.categories[0].name : "",
                         price: (event.data?.price_incl_tax / event.data?.quantity).toFixed(2),
-                        quantity: event.data?.quantity
+                        quantity: event.data?.quantity,
                     }
                 ]
             }
